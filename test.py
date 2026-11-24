@@ -3,7 +3,7 @@ import pickle
 import matplotlib.pyplot as plt
 
 train, test = get_train_test_gazeta('train.parquet', 'test.parquet')
-text = test["text"].to_list()[:1]
+text = test["text"].to_list()
 gold = test["summary"].to_list()
 
 
@@ -146,14 +146,12 @@ with open('summaries_lexr.pkl', 'wb') as f:
 textr = TextRank(mode="count", setted_idf=True)
 
 result = textr.get_summary_mass(text, 10)
-print(result)
 N = len(result)
 cum_rouge1 = cum_rouge2 = cumf1 = cum1f1 =  0
 summaries_textr = []
 for i, res in enumerate(result):
     example = gold[i]
     t_r = make_text(firts_n(res, 300))
-    print(t_r)
     summaries_textr.append(t_r)
 
     f1, pres, rec = rougef1(t_r, example, segmenter, morph_tagger, 2)
